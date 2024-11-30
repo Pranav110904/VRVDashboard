@@ -105,17 +105,25 @@ export default function LoginPage() {
             >
               DON’T HAVE AN ACCOUNT? SIGN UP
             </button>
+            
           </div>
+          
         </div>
+        
       </section>
 
       {/* Right Section */}
       <section
-        className="w-full md:w-[50%] h-full bg-[#FFA31A] order:1  relative overflow-hidden flex items-center justify-center bg-cover bg-center"
+        className="w-full md:w-[50%] h-full  order:1  relative overflow-hidden flex flex-col items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: `url(${AI2})` }}
       >
-        {/* Additional content can go here */}
+      <div className="w-full  font-bold text-5xl h-full flex items-end mb-2 text-white   justify-center">Hello,Join Us</div>
+      {/* Additional content can go here */}
+      <div className="bg-white w-20 h-[3px] rounded-full mb-10"></div>
       </section>
+
+
+      
     </div>
   );
 }
