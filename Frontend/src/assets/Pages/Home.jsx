@@ -4,8 +4,8 @@ import Footer from '../components/Footer'
 const Home = () => {
   return (
     <div>
-        <Navbar/>
 
+      <Navbar></Navbar>
         <main className='font-raleway'>
     <section class="bg-[#29292f] py-16 px-4 flex justify-center">
       <div class="max-w-6xl flex flex-col md:flex-row items-center justify-between gap-[48px]">
@@ -41,40 +41,40 @@ const Home = () => {
     </section>
 
     <section class="bg-[#121318] py-16 px-4">
-      <div class="max-w-6xl mx-auto">
+      <div class="max-w-7xl mx-auto">
         <h2 class="text-[40px] text-center text-white font-bold mb-6">Discover Our Services</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className='bg-[#434659] p-[24px]'>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Data Protection Services</h3>
-            <p class="text-[16x] text-white">Safeguard sensitive information from breaches and mishandling.</p>
+            <p class="text-[14px] text-white">Safeguard sensitive information from breaches and mishandling.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Compliance Audits</h3>
-            <p class="text-[16x] text-white">Ensure your operations align with industry standards and regulations.</p>
+            <p class="text-[14px] text-white">Ensure your operations align with industry standards and regulations.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Supply Chain Security</h3>
-            <p class="text-[16x] text-white">Evaluate and secure the integrity of your supply chain networks.</p>
+            <p class="text-[14px] text-white">Evaluate and secure the integrity of your supply chain networks.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">ICS/SCADA Security Assessments</h3>
-            <p class="text-[16x] text-white">Enhance the cybersecurity posture of industrial control systems.</p>
+            <p class="text-[14px] text-white">Enhance the cybersecurity posture of industrial control systems.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'> 
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'> 
             <h3 class="text-[18px] font-bold mb-2 text-white ">Financial Data Protection</h3>
-            <p class="text-[16x] text-white">Secure sensitive financial information with tailored solutions.</p>
+            <p class="text-[14px] text-white">Secure sensitive financial information with tailored solutions.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Cloud Security Solutions</h3>
-            <p class="text-[16x] text-white">Safeguard your cloud environments against emerging cyber threats.</p>
+            <p class="text-[14px] text-white">Safeguard your cloud environments against emerging cyber threats.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Network Security Monitoring</h3>
-            <p class="text-[16x] text-white">Continuously monitor networks to detect and respond to threats.</p>
+            <p class="text-[14px] text-white">Continuously monitor networks to detect and respond to threats.</p>
           </div>
-          <div className='bg-[#434659] p-[24px]'>
+          <div className='bg-[#434659] rounded-[4px] p-[24px]'>
             <h3 class="text-[18px] font-bold mb-2 text-white ">Endpoint Security</h3>
-            <p class="text-[16x] text-white">Protect devices connected to your network against cyber threats.</p>
+            <p class="text-[14px] text-white">Protect devices connected to your network against cyber threats.</p>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@ const Home = () => {
     </section>
   </main>
         
-        <Footer/>
+       <Footer></Footer>
 
     </div>
   )
