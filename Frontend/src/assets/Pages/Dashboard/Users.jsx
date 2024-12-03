@@ -5,9 +5,9 @@ import EnhancedTable from '../../components/EnhancedTable';
 
 const Users = () => {
   return (
-    <div className="h-[70%]"> 
+    <div className="h-max"> 
       <section className="w-full h-full flex">
-        <div className="w-full h-full rounded-lg bg-[#bac3ff]"><EnhancedTable/></div>
+        <div className="w-full h-full rounded-2xl bg-white"><EnhancedTable/></div>
       </section>
     </div>
   );

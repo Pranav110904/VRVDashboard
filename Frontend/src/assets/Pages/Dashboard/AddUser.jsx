@@ -44,6 +44,8 @@ const AddUserForm = () => {
 
     try {
       await dispatch(addUser(formData));
+      alert('User added successfully!');
+      navigate('/dashboard/users');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -54,10 +56,13 @@ const AddUserForm = () => {
   };
 
   return (
-    <div className="container text-black font-poppins mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6 text-[#222361]">Add New User</h2>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6 border-2 border-[#222361]">
+    <div className="container text-black font-poppins rounded-2xl mx-auto">
+      <h2 className="text-2xl font-bold  text-[#222361] text-center md:text-left">
+        Add New User
+      </h2>
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-2xl p-6 border-2 border-[#222361]">
         
+        {/* Name Input */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Name
@@ -73,7 +78,7 @@ const AddUserForm = () => {
           />
         </div>
 
-        
+        {/* Email Input */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
             Email
@@ -89,7 +94,7 @@ const AddUserForm = () => {
           />
         </div>
 
-       
+        {/* Phone Input */}
         <div className="mb-4">
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
             Phone
@@ -100,12 +105,27 @@ const AddUserForm = () => {
             placeholder="Enter phone number"
             className="p-2 border border-gray-300 rounded-md w-full"
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              // Ensure that the phone number starts with +91 and contains exactly 13 characters (2 for +91, 10 digits)
+              if (value.startsWith('+91')) {
+                // Remove any non-digit characters after +91 and limit to 13 characters
+                e.target.value = '+91' + value.slice(3).replace(/\D/g, '').slice(0, 10);
+              } else {
+                e.target.value = '+91' + value.replace(/\D/g, '').slice(0, 10);
+              }
+
+              setFormData({ ...formData, phone: e.target.value });
+            }}
+            pattern="^\+91\d{10}$"  // Regex to ensure the phone number starts with +91 and has exactly 10 digits
+            title="Phone number must start with +91 and contain 10 digits"
             required
           />
-        </div>
+</div>
 
-        
+
+        {/* Date of Birth Input */}
         <div className="mb-4">
           <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
             Date of Birth
@@ -120,7 +140,7 @@ const AddUserForm = () => {
           />
         </div>
 
-        
+        {/* Role Select */}
         <div className="mb-4">
           <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
             Role
@@ -147,7 +167,7 @@ const AddUserForm = () => {
           </select>
         </div>
 
-        
+        {/* Status Toggle */}
         <div className="mb-4">
           <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
             Status
@@ -169,7 +189,7 @@ const AddUserForm = () => {
           </div>
         </div>
 
-        
+        {/* Created Date Input */}
         <div className="mb-4">
           <label htmlFor="createdDate" className="block text-sm font-medium text-gray-700 mb-1">
             Created Date
@@ -183,15 +203,15 @@ const AddUserForm = () => {
           />
         </div>
 
-       
-        <div className="flex items-center justify-between">
-          <button type="submit" className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center sm:justify-between">
+          <button type="submit" className="px-6 py-2  text-white bg-[#9e9ff3] rounded-md hover:bg-[#6265fe] w-full sm:w-auto mb-2 sm:mb-0">
             Add User
           </button>
           <button
             type="button"
-            onClick={() => navigate('/')}
-            className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+            
+            className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 w-full sm:w-auto"
           >
             Cancel
           </button>

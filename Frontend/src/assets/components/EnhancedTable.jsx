@@ -1,6 +1,11 @@
 import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { TiPlusOutline } from "react-icons/ti";
+import { MdSaveAlt } from "react-icons/md";
+import Users from "../Pages/Dashboard/Users";
 const EnhancedTable = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // Search query state
@@ -12,9 +17,7 @@ const EnhancedTable = () => {
     const fetchRoles = async () => {
       try {
         const roleResponse = await axios.get('/api/roles');
-        console.log(roleResponse.data);
         setRoles(roleResponse.data);
-        console.log(roleResponse.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
       }
@@ -27,7 +30,6 @@ useEffect(() => {
     try {
       const userResponse = await axios.get('/api/users');
       setUsers(userResponse.data);
-      console.log(userResponse.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -52,10 +54,8 @@ useEffect(() => {
     axios
       .delete(`/api/users/${userId}`) 
       .then((response) => {
-        console.log('User deleted:', response.data);
         setUsers(users.filter((u) => u._id !== userId));
-        console.log(users);
-      
+        alert("User deleted successfully!");
       })
       .catch((error) => {
         console.error('Error deleting user:', error);
@@ -71,6 +71,7 @@ useEffect(() => {
       await axios.delete('/api/users/deleteMany', {
         data: { ids: selectedUsers }  
       });
+      alert("Users deleted successfully!");
       setUsers((prevUsers) => prevUsers.filter((user) => !selectedUsers.includes(user._id)));
       setSelectedUsers([]);  
     } catch (error) {
@@ -109,13 +110,14 @@ useEffect(() => {
 
 
   const totalPages = Math.ceil(users.length / rowsPerPage);
+ 
   const paginatedUsers = users
     .filter((user) =>
-
+      
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchQuery.toLowerCase())
+      user.role.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
@@ -132,7 +134,6 @@ useEffect(() => {
 
   const handleEditUser = (user) => {
     setEditUser(user);
-    console.log(user);
  
   };
 
@@ -153,7 +154,6 @@ useEffect(() => {
     };
   
     try {
-      console.log(updatedUser);
       const response = await axios.put(`/api/users/edit/${editUser._id}`, updatedUser);
       if (response) {
        
@@ -172,12 +172,10 @@ useEffect(() => {
               user._id === updatedUser._id ? updatedUserWithRole : user 
             )
           );
-
-          console.log('Updated user with role:', updatedUserWithRole);
+          alert('User updated successfully');
         } else {
           console.error('Role not found');
         }
-        console.log('hello',users);
         setEditUser(null);
          
       } else {
@@ -192,166 +190,199 @@ useEffect(() => {
   
 
   return (
-    <div className="container  font-poppins mx-auto px-4 py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <input
-          type="text"
-          placeholder="Search user..."
-          className="p-2 border border-gray-300 rounded-md w-full max-w-md"
-          value={searchQuery} 
-          onChange={(e) => setSearchQuery(e.target.value)} 
-        />
-        
-        {selectedUsers==0 ? <span className="text-gray-500 text-sm">No users selected</span>:<span className="text-gray-500 text-sm">{selectedUsers.length} users selected</span>}
-        {selectedUsers.length === 0 ? (
-          <Link to={"adduser"} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-            Add User
-          </Link>
-        ) : (
-          <button
-            onClick={deleteSelectedUsers}
-            className="ml-4 px-4 py-2 bg-red-500 text-white rounded-md"
-          >
-            Delete Selected
-          </button>
-        )}
-      </div>
-      <table className="min-w-full border-2 border-[#222361] rounded-lg">
-        <thead>
-          <tr className="border-b-2 border-[#222361]">
-            <th className="p-4  text-left">
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  setSelectedUsers(
-                    e.target.checked ? users.map((user) => user._id) : []
-                  )
-                }
-                checked={selectedUsers.length === users.length && users.length > 0}
-              />
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("name")}>
-              Name {renderSortIndicator("name")}
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("email")}>
-              Email {renderSortIndicator("email")}
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("phone")}>
-              Phone {renderSortIndicator("phone")}
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("dob")}>
-              DOB {renderSortIndicator("dob")}
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("role")}>
-              Role {renderSortIndicator("role")}
-            </th>
-            <th className="p-4 text-left" onClick={() => sortUsers("status")}>
-              Status {renderSortIndicator("status")}
-            </th>
-            <th
-              className="p-4 text-left"
-              onClick={() => sortUsers("createdDate")}
-            >
-              Created Date {renderSortIndicator("createdDate")}
-            </th>
-            <th className="p-4 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedUsers.map((user) => (
-            <tr
-              key={user._id}
-              className={`${
-                isUserSelected(user._id) ? "bg-gray-100" : ""
-              } border-b`}
-            >
-              <td className="p-4">
-                <input
-                  type="checkbox"
-                  onChange={() => toggleUserSelection(user._id)}
-                  checked={isUserSelected(user._id)}
-                />
-              </td>
-              <td className="p-4">{user.name}</td>
-              <td className="p-4">{user.email}</td>
-              <td className="p-4">{user.phone}</td>
-              <td className="p-4">{new Date(user.dob).toLocaleDateString()}</td>
-              <td className="p-4">{user.role.name}</td>
-              <td className="p-4">
-              <span
-                  className={`px-2 py-1 text-sm rounded-md ${
-                    user.status === true
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {user.status === true ? "Active" : "Inactive"}
-                </span>
-              </td>
-              <td className="p-4">{new Date(user.createdDate).toLocaleDateString()}</td>
-              <td className="p-4 flex gap-2">
-                <button
-                  onClick={() => handleEditUser(user)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    
-                    deleteUser(user._id);; 
-                  }}
-                  className="px-4 py-2 bg-red-500 text-white rounded-md"
-                >
-                  Delete
-                </button>
+    <div className="container  text-[#222361]  font-poppins mx-auto px-4 py-8">
+      <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
+  <input
+    type="text"
+    placeholder="Search user..."
+    className="p-2  border-[#222361] border-2 rounded-md w-full max-w-md"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+  
+  <div className="flex items-center gap-2 mt-2 sm:mt-0">
+    {selectedUsers.length === 0 ? (
+      <span className="text-gray-500 text-sm">No users selected</span>
+    ) : (
+      <span className="text-gray-500 text-sm">{selectedUsers.length} users selected</span>
+    )}
 
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    {selectedUsers.length === 0 ? (
+      <Link to={"adduser"} className="px-4 py-2 flex gap-2  items-center justify-center bg-[#9e9ff3] text-[#222361] rounded-md text-xs sm:text-sm">
+        Add User  <TiPlusOutline size={25} />
+      </Link>
+    ) : (
+      <button
+        onClick={deleteSelectedUsers}
+        className="ml-4 px-4 py-2 bg-red-500  text-white rounded-md text-xs sm:text-sm"
+      >
+        Delete Selected
+      </button>
+    )}
+  </div>
+</div>
 
-      <div className="flex justify-between items-center mt-4">
-        <div>
-          <span>Rows per page: </span>
-          <select
-            value={rowsPerPage}
-            onChange={handleRowsPerPageChange}
-            className="border rounded-md p-2"
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={20}>20</option>
-            <option value={25}>25</option>
-          </select>
-        </div>
-        <div>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-300 rounded-md"
-          >
-            Previous
-          </button>
-          <span className="px-4">{currentPage}</span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-gray-300 rounded-md"
-          >
-            Next
-          </button>
-        </div>
-      </div>
+      <div className="overflow-x-auto">
+  <table className="min-w-full border-2 border-[#222361] rounded-lg text-sm sm:text-base">
+    <thead>
+      <tr className="border-b-2 border-[#222361]">
+        <th className="p-2 sm:p-4 text-left">
+          <input
+            type="checkbox"
+            onChange={(e) =>
+              setSelectedUsers(
+                e.target.checked ? users.map((user) => user._id) : []
+              )
+            }
+            checked={selectedUsers.length === users.length && users.length > 0}
+          />
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("name")}
+        >
+          Name {renderSortIndicator("name")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("email")}
+        >
+          Email {renderSortIndicator("email")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("phone")}
+        >
+          Phone {renderSortIndicator("phone")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("dob")}
+        >
+          DOB {renderSortIndicator("dob")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("role")}
+        >
+          Role {renderSortIndicator("role")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("status")}
+        >
+          Status {renderSortIndicator("status")}
+        </th>
+        <th
+          className="p-2 sm:p-4 text-left"
+          onClick={() => sortUsers("createdDate")}
+        >
+          Created Date {renderSortIndicator("createdDate")}
+        </th>
+        <th className="p-2 sm:p-4 text-left">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {paginatedUsers.map((user) => (
+        <tr
+          key={user._id}
+          className={`${
+            isUserSelected(user._id) ? "bg-gray-100" : ""
+          } border-b`}
+        >
+          <td className="p-2 sm:p-4">
+            <input
+              type="checkbox"
+              onChange={() => toggleUserSelection(user._id)}
+              checked={isUserSelected(user._id)}
+            />
+          </td>
+          <td className="p-2 sm:p-4">{user.name}</td>
+          <td className="p-2 sm:p-4">{user.email}</td>
+          <td className="p-2 sm:p-4">{user.phone}</td>
+          <td className="p-2 sm:p-4">
+            {new Date(user.dob).toLocaleDateString()}
+          </td>
+          <td className="p-2 sm:p-4">
+              {user.role ? user.role.name : "No Role Assigned"}
+            </td>
+          <td className="p-2 sm:p-4">
+            <span
+              className={`px-2 py-1 text-xs sm:text-sm rounded-md ${
+                user.status === true
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {user.status === true ? "Active" : "Inactive"}
+            </span>
+          </td>
+          <td className="p-2 sm:p-4">
+            {new Date(user.createdDate).toLocaleDateString()}
+          </td>
+          <td className="p-2 sm:p-4 flex flex-wrap gap-1 sm:gap-2">
+            <button
+              onClick={() => handleEditUser(user)}
+              className="px-2 py-1 sm:px-4 sm:py-2  text-[222361] rounded-md text-xs sm:text-sm"
+            >
+              <TbEdit size={30} />
+            </button>
+            <button
+              onClick={() => deleteUser(user._id)}
+              className="px-2 py-1 sm:px-4 sm:py-2  text-red-500 rounded-md text-xs sm:text-sm"
+            >
+              <RiDeleteBin6Line size={30} />
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
+<div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4 sm:gap-0">
+  <div className="flex items-center gap-2">
+    <span>Rows per page: </span>
+    <select
+      value={rowsPerPage}
+      onChange={handleRowsPerPageChange}
+      className="border rounded-md p-2 text-sm"
+    >
+      <option value={5}>5</option>
+      <option value={10}>10</option>
+      <option value={15}>15</option>
+      <option value={20}>20</option>
+      <option value={25}>25</option>
+    </select>
+  </div>
+  <div className="flex items-center gap-2">
+    <button
+      onClick={() => handlePageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+      className="px-4 py-2 bg-gray-300 rounded-md text-sm disabled:opacity-50"
+    >
+      Previous
+    </button>
+    <span className="text-sm">{currentPage}</span>
+    <button
+      onClick={() => handlePageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+      className="px-4 py-2 bg-gray-300 rounded-md text-sm disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+</div>
 
 
   
-      {editUser && (
-  <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
-    <div className="bg-black p-6 rounded-lg shadow-lg max-w-lg w-full">
-      <h2 className="text-xl text-white mb-4">Edit User: {editUser.name}</h2>
+{editUser && (
+  <div className="fixed inset-0 z-[10] bg-black bg-opacity-50 flex justify-center mx-5 items-center">
+    <div className="bg-[#222361] p-4 sm:p-6 md:p-8 rounded-lg shadow-lg w-full max-w-lg sm:max-w-md">
+      <h2 className="text-xl text-white mb-4 text-center sm:text-left">
+        Edit User: {editUser.name}
+      </h2>
       <form onSubmit={handleSaveChanges}>
         <div className="mb-4">
           <label className="text-white block">Name</label>
@@ -374,21 +405,35 @@ useEffect(() => {
           />
         </div>
         <div className="mb-4">
-          <label className="text-white block">Phone</label>
-          <input
-            type="text"
-            name="phone"
-            defaultValue={editUser.phone}
-            className="border p-2 w-full rounded-md"
-            placeholder="Enter phone number"
-          />
-        </div>
+            <label className="text-white block">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              defaultValue={editUser.phone}
+              className="border p-2 w-full rounded-md"
+              placeholder="Enter phone number"
+              maxLength="13" // 2 for '+91' and 10 digits for the phone number
+              pattern="^\+91\d{10}$" // Ensures the phone number matches the format +91 followed by 10 digits
+              onInput={(e) => {
+                // Ensures only digits are entered after +91
+                const value = e.target.value;
+                if (value.startsWith('+91')) {
+                  // Allow only 13 characters: +91 + 10 digits
+                  e.target.value = '+91' + value.slice(3).replace(/\D/g, '').slice(0, 10);
+                } else {
+                  // Set default +91 if input doesn't start with +91
+                  e.target.value = '+91' + value.replace(/\D/g, '').slice(0, 10);
+                }
+              }}
+            />
+          </div>
+
         <div className="mb-4">
           <label className="text-white block">Date of Birth</label>
           <input
             type="date"
             name="dob"
-            defaultValue={editUser.dob ? editUser.dob.split('T')[0] : ""} 
+            defaultValue={editUser.dob ? editUser.dob.split('T')[0] : ""}
             className="border p-2 w-full rounded-md"
           />
         </div>
@@ -396,7 +441,7 @@ useEffect(() => {
           <label className="text-white block">Role</label>
           <select
             name="role"
-            defaultValue={editUser.role} 
+            defaultValue={editUser.role}
             className="border p-2 w-full rounded-md"
           >
             {roles.map((role) => (
@@ -405,7 +450,7 @@ useEffect(() => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-white mb-1">
             Status
           </label>
           <div className="flex items-center">
@@ -420,20 +465,23 @@ useEffect(() => {
             <span className="ml-3">{editUser.status ? 'Active' : 'Inactive'}</span>
           </div>
         </div>
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
-          Save Changes
-        </button>
-        <button
-          type="button"
-          onClick={() => setEditUser(null)}
-          className="ml-4 px-4 py-2 bg-gray-500 text-white rounded-md"
-        >
-          Cancel
-        </button>
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mt-4">
+          <button type="submit" className="px-4 py-2 bg-[#9e9ff3] text-white rounded-md w-full sm:w-auto">
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={() => setEditUser(null)}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   </div>
 )}
+
 
 
 

@@ -2,7 +2,10 @@ import React from 'react'
 
 const Prime = () => {
   return (
-    <div>Prime</div>
+    <div>
+
+      
+    </div>
   )
 }
 

@@ -10,15 +10,15 @@ import Prime from './assets/Pages/Dashboard/Prime';
 import ActivityLogs from './assets/Pages/Dashboard/ActivityLogs';
 import Navbar from './assets/components/Navbar';
 import Footer from './assets/components/Footer';
-import Profile from './assets/Pages/Dashboard/Profile';
 import AddUser from './assets/Pages/Dashboard/AddUser';
 import AddRole from './assets/Pages/Dashboard/AddRole';
 import Adding from './assets/components/Adding';
 
+
 function App() {
   return (
     <>
-       <div class="" id="style-2">
+       <div className="" id="style-2">
 
       <Routes>
 
@@ -37,7 +37,6 @@ function App() {
           <Route path="permissions" element={<Permissions />} />
           <Route path="app" element={<Prime />} />
           <Route path="activity-logs" element={<ActivityLogs />} />
-          <Route path="profile" element={<Profile />} />
           
           
         </Route>

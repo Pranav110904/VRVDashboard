@@ -24,7 +24,6 @@ const Permissions = () => {
     showModal,
   } = useSelector((state) => state.permissions);
 
- 
   useEffect(() => {
     const fetchRolesAndPermissions = async () => {
       try {
@@ -40,22 +39,18 @@ const Permissions = () => {
     fetchRolesAndPermissions();
   }, [dispatch]);
 
-  
   const filteredRoles = roles.filter((role) =>
     role.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
- 
   const handleOpenModal = (role) => {
     dispatch(setSelectedRole(role));
   };
 
-  
   const handleTogglePermission = (permissionId) => {
     dispatch(togglePermission(permissionId));
   };
 
-  
   const handleUpdatePermissions = () => {
     if (selectedRole) {
       axios
@@ -63,6 +58,7 @@ const Permissions = () => {
           permissions: updatedPermissions,
         })
         .then(() => {
+          alert("Permissions updated successfully");
           dispatch(updateRoles({ _id: selectedRole._id, permissions: permissionsList.filter((permission) => updatedPermissions.includes(permission._id)) }));
         })
         .catch((err) => {
@@ -72,58 +68,62 @@ const Permissions = () => {
   };
 
   return (
-    <div className="container font-poppins mx-auto px-4 py-8">
+    <div className="container font-poppins bg-white rounded-2xl text-[#222361] mx-auto px-4 py-8">
       <div className="mb-4 flex items-center justify-between">
         <input
           type="text"
           placeholder="Search role..."
-          className="p-2 border border-gray-300 rounded-md w-full max-w-md"
+          className="p-2 border-2 border-[#222361] rounded-md w-full max-w-md"
           value={searchQuery}
           onChange={(e) => dispatch(setSearchQuery(e.target.value))}
         />
       </div>
 
-      <table className="min-w-full border-2 border-[#222361] rounded-lg">
-        <thead>
-          <tr className="border-b-2 border-[#222361]">
-            <th className="p-4 text-left">Role Name</th>
-            <th className="p-4 text-left">Permissions</th>
-            <th className="p-4 text-left">Created Date</th>
-            <th className="p-4 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRoles.map((role) => (
-            <tr key={role._id} className="border-b">
-              <td className="p-4">{role.name}</td>
-              <td className="p-4">
-                <div className="flex flex-wrap text-[#504f4f] space-x-2">
-                  {role.permissions.map((permission) => (
-                    <span
-                      key={permission._id}
-                      className="bg-gray-200 text-sm px-2 py-1 rounded-md"
-                    >
-                      {permission.name}
-                    </span>
-                  ))}
-                </div>
-              </td>
-              <td className="p-4">{new Date(role.createdDate).toLocaleDateString()}</td>
-              <td className="p-4">
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  onClick={() => handleOpenModal(role)}
-                >
-                  Update
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-2 border-[#222361] rounded-lg">
+          <thead>
+            <tr className="border-b-2 border-[#222361]">
+              <th className="p-4 text-left">Role Name</th>
+              <th className="p-4 text-left">Permissions</th>
+              <th className="p-4 text-left hidden sm:table-cell">Created Date</th>
+              <th className="p-4 text-left">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredRoles.map((role) => (
+              <tr key={role._id} className="border-b">
+                <td className="p-4">{role.name}</td>
+                <td className="p-4">
+                  <div className="flex  items-center justify-start gap-2 px-4 py-2 flex-wrap text-[#222361] space-x-2">
+                    {role.permissions.map((permission) => (
+                      <span
+                        key={permission._id}
+                        className="border-2 border-[#222361]  text-sm px-2 py-1 rounded-md"
+                      >
+                        {permission.name}
+                      </span>
+                    ))}
+                  </div>
+                </td>
+                <td className="p-4 hidden sm:table-cell">
+                  {new Date(role.createdDate).toLocaleDateString()}
+                </td>
+                <td className="p-4">
+                  <button
+                    className="bg-[#8789ff] text-white px-4 py-2 rounded-md"
+                    onClick={() => handleOpenModal(role)}
+                  >
+                    Update
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black text-black bg-opacity-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black text-black bg-opacity-50 mx-5 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h2 className="text-lg font-semibold mb-4">
               Update Permissions for {selectedRole.name}
@@ -151,7 +151,7 @@ const Permissions = () => {
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                className="bg-[#9e9ff3] text-white px-4 py-2 rounded-md"
                 onClick={handleUpdatePermissions}
               >
                 Save

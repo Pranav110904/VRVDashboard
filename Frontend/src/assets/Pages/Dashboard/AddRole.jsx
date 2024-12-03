@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPermissions, addRole } from "../../redux/Slices/roleSlice";
 import axios from "axios";
-
+import { TiPlusOutline } from "react-icons/ti";
+import { Navigate } from "react-router-dom";
 const AddRoleForm = () => {
   const dispatch = useDispatch();
   const { permissions, status, error } = useSelector((state) => state.roles);
@@ -26,20 +27,30 @@ const AddRoleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(addRole(formData)); 
+      // Dispatching the addRole action
+      await dispatch(addRole(formData));
+  
+      // Success message and resetting form data
       alert("Role added successfully!");
+  
       setFormData({
         name: "",
         active: false,
         permissions: [],
         createdDate: new Date().toISOString().slice(0, 10),
       });
+  
+      // Redirecting to roles page
+      navigate('/dashboard/roles');
     } catch (error) {
+      navigate('/dashboard/roles');
       console.error("Error adding role:", error);
-      alert("Error adding role. Please check the console for details.");
+      
+  
+      
     }
   };
-
+  
   const toggleActive = () => {
     setFormData((prevData) => ({ ...prevData, active: !prevData.active }));
   };
@@ -54,15 +65,15 @@ const AddRoleForm = () => {
   };
 
   return (
-    <div className="container text-black font-poppins mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6 text-[#222361]">Add New Role</h2>
+    <div className="container text-[#222361] w-full font-poppins mx-auto ">
+
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-lg p-6 border-2 border-[#222361]"
+        className="bg-white shadow-md rounded-2xl p-6 border-2 border-[#222361]"
       >
        
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-[#222361] mb-1">
             Name
           </label>
           <input
@@ -79,7 +90,7 @@ const AddRoleForm = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="active" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="active" className="block text-sm font-medium text-[#222361] mb-1">
             Active Status
           </label>
           <div className="flex items-center">
@@ -97,7 +108,7 @@ const AddRoleForm = () => {
 
         
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Permissions</label>
+          <label className="block text-sm font-medium text-[#222361] mb-1">Permissions</label>
           <div className="grid grid-cols-2 gap-2">
             {status === 'loading' ? (
               <div>Loading permissions...</div>
@@ -125,7 +136,7 @@ const AddRoleForm = () => {
 
        
         <div className="mb-4">
-          <label htmlFor="createdDate" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="createdDate" className="block text-sm font-medium text-[#222361] mb-1">
             Created Date
           </label>
           <input
@@ -141,13 +152,13 @@ const AddRoleForm = () => {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="px-6 py-2 bg-[#686bff] text-white rounded-md hover:bg-blue-600"
           >
-            Add Role
+            <div className='flex justify-center items-center gap-2'>Add User <TiPlusOutline size={25} /></div> 
           </button>
           <button
             type="button"
-            className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+            className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-red-500"
           >
             Cancel
           </button>
