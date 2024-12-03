@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/user.model');
 const Role = require('../models/role.model');
 
-// Add user
 router.post('/adduser', async (req, res) => {
     try {
         const { name, email, phone, dob, role, status, createdDate } = req.body;
@@ -30,7 +29,6 @@ router.post('/adduser', async (req, res) => {
     }
 });
 
-// Get all users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find().populate('role');
@@ -41,7 +39,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Update user
 router.put('/edit/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -55,7 +52,6 @@ router.put('/edit/:userId', async (req, res) => {
     }
 });
 
-// Delete user
 router.delete('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
@@ -68,7 +64,6 @@ router.delete('/:userId', async (req, res) => {
     }
 });
 
-// Delete multiple users
 router.delete('/', async (req, res) => {
     const { ids } = req.body;
     if (!ids || !Array.isArray(ids)) return res.status(400).json({ message: 'Invalid request' });

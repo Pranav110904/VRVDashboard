@@ -3,7 +3,6 @@ const router = express.Router();
 const Role = require('../models/role.model');
 const Permission = require('../models/permission.model');
 
-// Add role
 router.post('/addrole', async (req, res) => {
     try {
         const { name, active, permissions, createdDate } = req.body;
@@ -24,15 +23,11 @@ router.delete('/roles/:id', async (req, res) => {
         const { id } = req.params;
         console.log(id);
 
-        // Validate the ID (optional, but recommended)
         if (!id) {
             return res.status(400).json({ message: 'ID is required' });
         }
 
-        // Perform deletion
         const deletedUser = await Role.findByIdAndDelete(id);
-
-        // Check if the user existed
         if (!deletedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -45,7 +40,6 @@ router.delete('/roles/:id', async (req, res) => {
 });
 
 
-// Get all roles
 router.get('/', async (req, res) => {
     try {
         const roles = await Role.find().populate('permissions');
@@ -56,7 +50,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Update role permissions
 router.put('/:roleId', async (req, res) => {
     try {
         const { roleId } = req.params;

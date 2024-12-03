@@ -8,7 +8,7 @@ const EnhancedTable = () => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    // Fetch roles first
+
     const fetchRoles = async () => {
       try {
         const roleResponse = await axios.get('/api/roles');
@@ -20,7 +20,7 @@ const EnhancedTable = () => {
       }
     };
     fetchRoles();
-}, []); // This will run only once when the component mounts
+}, []); 
 
 useEffect(() => {
   const fetchUsers = async () => {
@@ -33,15 +33,15 @@ useEffect(() => {
     }
   };
   
- // Ensure roles are fetched before fetching users
-    fetchUsers();
+
+  fetchUsers();
   
-}, []); // This will rerun when roles are updated
+}, []); 
 
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Default number of rows per page
-  const [editUser, setEditUser] = useState(null); // State to track user being edited
+  const [rowsPerPage, setRowsPerPage] = useState(5); 
+  const [editUser, setEditUser] = useState(null); 
   const toggleUserSelection = (id) => {
     setSelectedUsers((prev) =>
       prev.includes(id) ? prev.filter((userId) => userId !== id) : [...prev, id]
@@ -50,10 +50,9 @@ useEffect(() => {
 
   const deleteUser = (userId) => {
     axios
-      .delete(`/api/users/${userId}`) // Replace with your API endpoint
+      .delete(`/api/users/${userId}`) 
       .then((response) => {
         console.log('User deleted:', response.data);
-        // After deleting, update the state to remove the user locally
         setUsers(users.filter((u) => u._id !== userId));
         console.log(users);
       
@@ -68,14 +67,12 @@ useEffect(() => {
 
   const deleteSelectedUsers = async () => {
     try {
-      // Send the list of selected user IDs to the backend
-      await axios.delete('/api/users', {
-        data: { ids: selectedUsers }  // Pass the selected user IDs as the body of the request
+     
+      await axios.delete('/api/users/deleteMany', {
+        data: { ids: selectedUsers }  
       });
-  
-      // Update the UI by filtering out the deleted users
       setUsers((prevUsers) => prevUsers.filter((user) => !selectedUsers.includes(user._id)));
-      setSelectedUsers([]);  // Clear the selection after deletion
+      setSelectedUsers([]);  
     } catch (error) {
       console.error("Error deleting selected users:", error);
     }
@@ -110,11 +107,11 @@ useEffect(() => {
     return "";
   };
 
-  // Pagination logic
+
   const totalPages = Math.ceil(users.length / rowsPerPage);
   const paginatedUsers = users
     .filter((user) =>
-      // Filter users based on search query
+
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -130,52 +127,49 @@ useEffect(() => {
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset to the first page when rows-per-page changes
+    setCurrentPage(1);
   };
 
-  // Handle Edit action
   const handleEditUser = (user) => {
     setEditUser(user);
     console.log(user);
-    // You can add code here to show a modal or form to edit the user details.
+ 
   };
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
   
-    // Capture the date from the form and convert to desired format
     const dob = event.target.dob.value;
     const formattedDob = dob ? new Date(dob).toISOString() : editUser.dob;
   
-    // Collect updated data from the form
     const updatedUser = {
       ...editUser,
       name: event.target.name.value,
       email: event.target.email.value,
       phone: event.target.phone.value,
-      dob: formattedDob, // Use the formatted dob
+      dob: formattedDob, 
       role: event.target.role.value,
-      status: editUser.status, // Assuming the toggle already updates the status in the state
+      status: editUser.status, 
     };
   
     try {
       console.log(updatedUser);
-      const response = await axios.put(`/api/dashboard/users/edit/${editUser._id}`, updatedUser);
+      const response = await axios.put(`/api/users/edit/${editUser._id}`, updatedUser);
       if (response) {
-        // Update the frontend data (if you store a list of users in state)
-        const role = roles.find(role => role._id === updatedUser.role); // Find the role by its _id
+       
+        const role = roles.find(role => role._id === updatedUser.role); 
 
         if (role) {
-          // Include the full role data into the updated user object
+          
           const updatedUserWithRole = {
-            ...updatedUser, // Copy the updated user data
-            role: role, // Add the full role data instead of just the role ID
+            ...updatedUser, 
+            role: role, 
           };
 
-          // Now you can update your users state or perform other operations
+          
           setUsers((prevUsers) =>
             prevUsers.map((user) =>
-              user._id === updatedUser._id ? updatedUserWithRole : user // Match by _id and replace with updated user
+              user._id === updatedUser._id ? updatedUserWithRole : user 
             )
           );
 
@@ -185,7 +179,7 @@ useEffect(() => {
         }
         console.log('hello',users);
         setEditUser(null);
-         // Close the modal
+         
       } else {
         console.error('Failed to update user:', response.data.message);
       }
@@ -204,8 +198,8 @@ useEffect(() => {
           type="text"
           placeholder="Search user..."
           className="p-2 border border-gray-300 rounded-md w-full max-w-md"
-          value={searchQuery} // Bind input to searchQuery state
-          onChange={(e) => setSearchQuery(e.target.value)} // Update search query on change
+          value={searchQuery} 
+          onChange={(e) => setSearchQuery(e.target.value)} 
         />
         
         {selectedUsers==0 ? <span className="text-gray-500 text-sm">No users selected</span>:<span className="text-gray-500 text-sm">{selectedUsers.length} users selected</span>}
@@ -304,8 +298,8 @@ useEffect(() => {
                 </button>
                 <button
                   onClick={() => {
-                    // Assuming you have a function to delete the user from the backend or perform other necessary actions
-                    deleteUser(user._id);; // Filter out the user with the matching _id
+                    
+                    deleteUser(user._id);; 
                   }}
                   className="px-4 py-2 bg-red-500 text-white rounded-md"
                 >
@@ -394,7 +388,7 @@ useEffect(() => {
           <input
             type="date"
             name="dob"
-            defaultValue={editUser.dob ? editUser.dob.split('T')[0] : ""} // Extracting date part
+            defaultValue={editUser.dob ? editUser.dob.split('T')[0] : ""} 
             className="border p-2 w-full rounded-md"
           />
         </div>
@@ -402,7 +396,7 @@ useEffect(() => {
           <label className="text-white block">Role</label>
           <select
             name="role"
-            defaultValue={editUser.role} // Select the role from the user data
+            defaultValue={editUser.role} 
             className="border p-2 w-full rounded-md"
           >
             {roles.map((role) => (

@@ -1,53 +1,61 @@
-import React, { useState, useEffect } from "react";
+// src/components/Permissions.js
+
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import {
+  setRoles,
+  setPermissionsList,
+  setSearchQuery,
+  setSelectedRole,
+  togglePermission,
+  closeModal,
+  updateRoles,
+} from "../../redux/Slices/permissionSlice";
 
 const Permissions = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [roles, setRoles] = useState([]);
-  const [permissionsList, setPermissionsList] = useState([]);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [updatedPermissions, setUpdatedPermissions] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const {
+    searchQuery,
+    roles,
+    permissionsList,
+    selectedRole,
+    updatedPermissions,
+    showModal,
+  } = useSelector((state) => state.permissions);
 
-  // Fetch roles and permissions from the backend
+ 
   useEffect(() => {
     const fetchRolesAndPermissions = async () => {
       try {
         const rolesResponse = await axios.get("/api/roles");
         const permissionsResponse = await axios.get("/api/permissions");
-        setRoles(rolesResponse.data);
-        setPermissionsList(permissionsResponse.data);
+        dispatch(setRoles(rolesResponse.data));
+        dispatch(setPermissionsList(permissionsResponse.data));
       } catch (err) {
         console.error("Error fetching data:", err);
       }
     };
 
     fetchRolesAndPermissions();
-  }, []);
+  }, [dispatch]);
 
-  // Filter roles based on the search query
+  
   const filteredRoles = roles.filter((role) =>
     role.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Open modal and initialize permissions for the selected role
+ 
   const handleOpenModal = (role) => {
-    setSelectedRole(role);
-    const rolePermissions = role.permissions.map((permission) => permission._id);
-    setUpdatedPermissions(rolePermissions);
-    setShowModal(true);
+    dispatch(setSelectedRole(role));
   };
 
-  // Toggle permission in the updatedPermissions state
+  
   const handleTogglePermission = (permissionId) => {
-    setUpdatedPermissions((prev) =>
-      prev.includes(permissionId)
-        ? prev.filter((id) => id !== permissionId)
-        : [...prev, permissionId]
-    );
+    dispatch(togglePermission(permissionId));
   };
 
-  // Save updated permissions to the backend
+  
   const handleUpdatePermissions = () => {
     if (selectedRole) {
       axios
@@ -55,16 +63,7 @@ const Permissions = () => {
           permissions: updatedPermissions,
         })
         .then(() => {
-          setRoles((prevRoles) =>
-            prevRoles.map((role) =>
-              role._id === selectedRole._id
-                ? { ...role, permissions: permissionsList.filter((permission) =>
-                    updatedPermissions.includes(permission._id)
-                  ) }
-                : role
-            )
-          );
-          setShowModal(false);
+          dispatch(updateRoles({ _id: selectedRole._id, permissions: permissionsList.filter((permission) => updatedPermissions.includes(permission._id)) }));
         })
         .catch((err) => {
           console.error("Error updating permissions:", err);
@@ -80,7 +79,7 @@ const Permissions = () => {
           placeholder="Search role..."
           className="p-2 border border-gray-300 rounded-md w-full max-w-md"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => dispatch(setSearchQuery(e.target.value))}
         />
       </div>
 
@@ -134,17 +133,11 @@ const Permissions = () => {
                 <div key={permission._id} className="flex items-center justify-between">
                   <span>{permission.name}</span>
                   <div
-                    className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${
-                      updatedPermissions.includes(permission._id) ? "bg-green-500" : "bg-gray-300"
-                    }`}
+                    className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer ${updatedPermissions.includes(permission._id) ? "bg-green-500" : "bg-gray-300"}`}
                     onClick={() => handleTogglePermission(permission._id)}
                   >
                     <div
-                      className={`h-4 w-4 bg-white rounded-full shadow-md transform ${
-                        updatedPermissions.includes(permission._id)
-                          ? "translate-x-6"
-                          : "translate-x-0"
-                      } transition-transform`}
+                      className={`h-4 w-4 bg-white rounded-full shadow-md transform ${updatedPermissions.includes(permission._id) ? "translate-x-6" : "translate-x-0"} transition-transform`}
                     />
                   </div>
                 </div>
@@ -153,19 +146,13 @@ const Permissions = () => {
             <div className="mt-6 flex justify-end space-x-2">
               <button
                 className="bg-gray-300 px-4 py-2 rounded-md"
-                onClick={() => setShowModal(false)}
+                onClick={() => dispatch(closeModal())}
               >
                 Cancel
               </button>
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                onClick={() => {
-                  handleUpdatePermissions();
-                  console.log("Updated Permissions Object:", {
-                    roleId: selectedRole._id,
-                    permissions: updatedPermissions,
-                  });
-                }}
+                onClick={handleUpdatePermissions}
               >
                 Save
               </button>

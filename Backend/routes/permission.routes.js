@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Permission = require('../models/permission.model');
 
-// Add permission
 router.post('/', async (req, res) => {
     try {
         const { permission } = req.body;
@@ -17,7 +16,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Get all permissions
 router.get('/', async (req, res) => {
     try {
         const permissions = await Permission.find();

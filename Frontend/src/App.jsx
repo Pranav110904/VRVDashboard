@@ -19,17 +19,17 @@ function App() {
   return (
     <>
        <div class="" id="style-2">
-        {/* Main Routes */}
+
       <Routes>
-        {/* Landing Page */}
+
         <Route path="/" element={<Home />} />
         <Route path="/add/permissions" element={<Adding/>} />
-        {/* Login Page */}
+
         <Route path="/login" element={<Login />} />
 
-        {/* Dashboard Routes */}
+
         <Route path="/dashboard" element={<Dashboard />}>
-          {/* Sub-Routes for Dashboard */}
+
           <Route path="users" element={<Users />} />
           <Route path="users/adduser" element={<AddUser />} />
           <Route path="roles" element={<Roles />} />
@@ -42,7 +42,7 @@ function App() {
           
         </Route>
 
-        {/* Catch-All Route (404 Page) */}
+
         <Route path="*" element={<div className="text-center text-white">Page Not Found</div>} />
       </Routes>
 

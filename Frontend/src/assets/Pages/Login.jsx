@@ -26,12 +26,12 @@ export default function LoginPage() {
       return;
     }
 
-    setError(""); // Clear the error if validation passes
+    setError(""); 
 
-    // Check against mock admin credentials
+   
     if (email === mockAdmin.email && password === mockAdmin.password) {
       try {
-        // Simulate a successful login response
+       
         const response = {
           data: {
             message: "Login successful",
@@ -40,12 +40,12 @@ export default function LoginPage() {
         };
         
         console.log("Login Response:", response.data);
-        alert(response.data.message); // Show success message
+        alert(response.data.message); 
         
-        // Store a mock token
+        
         localStorage.setItem("token", "fake-token");
         
-        // Redirect to the dashboard
+        
         navigate("/dashboard");
 
       } catch (error) {
@@ -59,7 +59,7 @@ export default function LoginPage() {
 
   return (
     <div className="w-full h-screen bg-[#29292f] flex flex-col md:flex-row font-raleway">
-      {/* Left Section */}
+      
       <section className="w-full md:w-[50%] bg-white p-6 md:p-12 order-2 overflow-y-auto flex-shrink-0">
         <div className="w-full">
           <div className="w-full h-full flex flex-col 2xl:p-20 gap-6 md:gap-8">
@@ -112,13 +112,13 @@ export default function LoginPage() {
         
       </section>
 
-      {/* Right Section */}
+     
       <section
         className="w-full md:w-[50%] h-full  order:1  relative overflow-hidden flex flex-col items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: `url(${AI2})` }}
       >
       <div className="w-full  font-bold text-5xl h-full flex items-end mb-2 text-white   justify-center">Hello,Join Us</div>
-      {/* Additional content can go here */}
+      
       <div className="bg-white w-20 h-[3px] rounded-full mb-10"></div>
       </section>
 

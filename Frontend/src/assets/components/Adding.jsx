@@ -14,7 +14,7 @@ const Adding = () => {
 
       if (response.status === 201) {
         console.log('Permission added successfully');
-        setPermission(''); // Clear the input field after successful submission
+        setPermission(''); 
       } else {
         console.error('Error adding permission:', response.statusText);
       }

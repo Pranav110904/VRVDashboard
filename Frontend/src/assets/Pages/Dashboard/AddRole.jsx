@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Import axios for API calls
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPermissions, addRole } from "../../redux/Slices/roleSlice";
+import axios from "axios";
 
 const AddRoleForm = () => {
+  const dispatch = useDispatch();
+  const { permissions, status, error } = useSelector((state) => state.roles);
+
   const [formData, setFormData] = useState({
     name: "",
     active: false,
@@ -9,63 +14,32 @@ const AddRoleForm = () => {
     createdDate: "",
   });
 
-  const [permissionsList, setPermissionsList] = useState([]); // State for storing permissions
-
   useEffect(() => {
-    // Fetch permissions from the backend when the component mounts
-    const fetchPermissions = async () => {
-      try {
-        const response = await axios.get("/api/permissions"); // Replace with the correct endpoint
-        
-        setPermissionsList(response.data); // Assuming the permissions are in response.data.data
-      } catch (error) {
-        console.error("Error fetching permissions:", error);
-      }
-    };
-   
-    fetchPermissions();
-    
-   
-    // Set current date for createdDate field
+    dispatch(fetchPermissions()); 
     const currentDate = new Date().toISOString().slice(0, 10);
     setFormData((prevData) => ({
       ...prevData,
       createdDate: currentDate,
     }));
-  }, []);
-  // Log the permissions after they have been fetched
-  useEffect(() => {
-    if (permissionsList.length > 0) {
-      
-    }
-  }, [permissionsList]); // This effect will run whenever permissionsList changes
+  }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     try {
-      const response = await axios.post(
-        '/api/roles/addRole', // Replace with the correct endpoint
-        formData,
-      );
-      if (response.status === 201) {
-        alert("Role added successfully!");
-        // Optionally reset the form after successful submission
-        setFormData({
-          name: "",
-          active: false,
-          permissions: [],
-          createdDate: new Date().toISOString().slice(0, 10),
-        });
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
+      dispatch(addRole(formData)); 
+      alert("Role added successfully!");
+      setFormData({
+        name: "",
+        active: false,
+        permissions: [],
+        createdDate: new Date().toISOString().slice(0, 10),
+      });
     } catch (error) {
       console.error("Error adding role:", error);
       alert("Error adding role. Please check the console for details.");
     }
   };
-  
+
   const toggleActive = () => {
     setFormData((prevData) => ({ ...prevData, active: !prevData.active }));
   };
@@ -86,7 +60,7 @@ const AddRoleForm = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg p-6 border-2 border-[#222361]"
       >
-        {/* Name Field */}
+       
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Name
@@ -104,7 +78,6 @@ const AddRoleForm = () => {
           />
         </div>
 
-        {/* Active Status Toggle */}
         <div className="mb-4">
           <label htmlFor="active" className="block text-sm font-medium text-gray-700 mb-1">
             Active Status
@@ -122,33 +95,35 @@ const AddRoleForm = () => {
           </div>
         </div>
 
-        {/* Permissions Section with Toggle */}
+        
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">Permissions</label>
           <div className="grid grid-cols-2 gap-2">
-            {permissionsList.length > 0 ? (
-              permissionsList.map((permission) => (
+            {status === 'loading' ? (
+              <div>Loading permissions...</div>
+            ) : error ? (
+              <div>Error loading permissions: {error}</div>
+            ) : (
+              permissions.map((permission) => (
                 <div key={permission._id} className="flex items-center justify-between">
                   <div className="flex items-center">
                     <span>{permission.name}</span>
                   </div>
                   <div
-                    className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer ${formData.permissions.includes(permission) ? "bg-green-500" : "bg-gray-300"}`}
-                    onClick={() => handlePermissionToggle(permission)}
+                    className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer ${formData.permissions.includes(permission._id) ? "bg-green-500" : "bg-gray-300"}`}
+                    onClick={() => handlePermissionToggle(permission._id)}
                   >
                     <div
-                      className={`h-4 w-4 bg-white rounded-full shadow-md transform ${formData.permissions.includes(permission) ? "translate-x-6" : "translate-x-0"} transition-transform`}
+                      className={`h-4 w-4 bg-white rounded-full shadow-md transform ${formData.permissions.includes(permission._id) ? "translate-x-6" : "translate-x-0"} transition-transform`}
                     />
                   </div>
                 </div>
               ))
-            ) : (
-              <div>Loading permissions...</div>
             )}
           </div>
         </div>
 
-        {/* Created Date (Read-Only) */}
+       
         <div className="mb-4">
           <label htmlFor="createdDate" className="block text-sm font-medium text-gray-700 mb-1">
             Created Date
@@ -162,7 +137,7 @@ const AddRoleForm = () => {
           />
         </div>
 
-        {/* Action Buttons */}
+        
         <div className="flex items-center justify-between">
           <button
             type="submit"

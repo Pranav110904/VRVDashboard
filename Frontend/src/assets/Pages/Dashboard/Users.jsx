@@ -5,7 +5,7 @@ import EnhancedTable from '../../components/EnhancedTable';
 
 const Users = () => {
   return (
-    <div className="h-[70%]"> {/* Ensure the parent div has height */}
+    <div className="h-[70%]"> 
       <section className="w-full h-full flex">
         <div className="w-full h-full rounded-lg bg-[#bac3ff]"><EnhancedTable/></div>
       </section>
