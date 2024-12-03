@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import TableDemo from '../../components/EnhancedTable';
+import EnhancedTable from '../../components/EnhancedTable';
+
 
 const Users = () => {
   return (
-    <div>Users</div>
-  )
-}
+    <div className="h-[70%]"> {/* Ensure the parent div has height */}
+      <section className="w-full h-full flex">
+        <div className="w-full h-full rounded-lg bg-[#bac3ff]"><EnhancedTable/></div>
+      </section>
+    </div>
+  );
+};
 
-export default Users
+export default Users;
