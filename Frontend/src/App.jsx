@@ -13,7 +13,7 @@ import Footer from './assets/components/Footer';
 import AddUser from './assets/Pages/Dashboard/AddUser';
 import AddRole from './assets/Pages/Dashboard/AddRole';
 import Adding from './assets/components/Adding';
-
+import './assets/loading.css'
 
 function App() {
   return (

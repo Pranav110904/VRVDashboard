@@ -208,7 +208,7 @@ useEffect(() => {
     )}
 
     {selectedUsers.length === 0 ? (
-      <Link to={"adduser"} className="px-4 py-2 flex gap-2  items-center justify-center bg-[#9e9ff3] text-[#222361] rounded-md text-xs sm:text-sm">
+      <Link to={"adduser"} className="px-4 py-2 flex gap-2  items-center justify-center bg-[#9e9ff3] text-white rounded-md text-xs sm:text-sm">
         Add User  <TiPlusOutline size={25} />
       </Link>
     ) : (
@@ -222,8 +222,8 @@ useEffect(() => {
   </div>
 </div>
 
-      <div className="overflow-x-auto">
-  <table className="min-w-full border-2 border-[#222361] rounded-lg text-sm sm:text-base">
+<div className="overflow-x-auto">
+  <table className="min-w-full border-2 border-[#222361] rounded-lg text-xs sm:text-base">
     <thead>
       <tr className="border-b-2 border-[#222361]">
         <th className="p-2 sm:p-4 text-left">
@@ -297,16 +297,16 @@ useEffect(() => {
               checked={isUserSelected(user._id)}
             />
           </td>
-          <td className="p-2 sm:p-4">{user.name}</td>
-          <td className="p-2 sm:p-4">{user.email}</td>
-          <td className="p-2 sm:p-4">{user.phone}</td>
-          <td className="p-2 sm:p-4">
+          <td className="p-2 sm:p-4 text-xs sm:text-base">{user.name}</td>
+          <td className="p-2 sm:p-4 text-xs sm:text-base">{user.email}</td>
+          <td className="p-2 sm:p-4 text-xs sm:text-base">{user.phone}</td>
+          <td className="p-2 sm:p-4 text-xs sm:text-base">
             {new Date(user.dob).toLocaleDateString()}
           </td>
-          <td className="p-2 sm:p-4">
+          <td className="p-2 sm:p-4 text-xs sm:text-base">
               {user.role ? user.role.name : "No Role Assigned"}
-            </td>
-          <td className="p-2 sm:p-4">
+          </td>
+          <td className="p-2 sm:p-4 text-xs sm:text-base">
             <span
               className={`px-2 py-1 text-xs sm:text-sm rounded-md ${
                 user.status === true
@@ -317,21 +317,21 @@ useEffect(() => {
               {user.status === true ? "Active" : "Inactive"}
             </span>
           </td>
-          <td className="p-2 sm:p-4">
+          <td className="p-2 sm:p-4 text-xs sm:text-base">
             {new Date(user.createdDate).toLocaleDateString()}
           </td>
           <td className="p-2 sm:p-4 flex flex-wrap gap-1 sm:gap-2">
             <button
               onClick={() => handleEditUser(user)}
-              className="px-2 py-1 sm:px-4 sm:py-2  text-[222361] rounded-md text-xs sm:text-sm"
+              className="px-2 py-1 sm:px-4 sm:py-2 text-[222361] rounded-md text-xs sm:text-sm"
             >
-              <TbEdit size={30} />
+              <TbEdit size={20} />
             </button>
             <button
               onClick={() => deleteUser(user._id)}
-              className="px-2 py-1 sm:px-4 sm:py-2  text-red-500 rounded-md text-xs sm:text-sm"
+              className="px-2 py-1 sm:px-4 sm:py-2 text-red-500 rounded-md text-xs sm:text-sm"
             >
-              <RiDeleteBin6Line size={30} />
+              <RiDeleteBin6Line size={20} />
             </button>
           </td>
         </tr>
@@ -339,6 +339,7 @@ useEffect(() => {
     </tbody>
   </table>
 </div>
+
 
 
 <div className="flex flex-col sm:flex-row justify-between items-center mt-4 gap-4 sm:gap-0">

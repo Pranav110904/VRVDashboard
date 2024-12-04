@@ -88,7 +88,7 @@ const RolesTable = () => {
     <table className="min-w-full border-2 border-[#222361] rounded-lg">
       <thead>
         <tr className="border-b-2 border-[#222361]">
-          <th className="p-4 text-left">
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">
             <input
               type="checkbox"
               onChange={() => {
@@ -101,17 +101,17 @@ const RolesTable = () => {
               checked={selectedRoles.length === filteredRoles.length && filteredRoles.length > 0}
             />
           </th>
-          <th className="p-4 text-left">Name</th>
-          <th className="p-4 text-left">Active</th>
-          <th className="p-4 text-left">Permissions</th>
-          <th className="p-4 text-left">Created Date</th>
-          <th className="p-4 text-left">Action</th>
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">Name</th>
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">Active</th>
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">Permissions</th>
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">Created Date</th>
+          <th className="p-2 sm:p-4 text-left text-xs sm:text-sm">Action</th>
         </tr>
       </thead>
       <tbody>
         {paginatedRoles.map((role) => (
           <tr key={role._id} className="border-b">
-            <td className="p-4">
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">
               <input
                 type="checkbox"
                 onChange={() =>
@@ -124,22 +124,30 @@ const RolesTable = () => {
                 checked={selectedRoles.includes(role._id)}
               />
             </td>
-            <td className="p-4">{role.name}</td>
-            <td className="p-4">{role.active ? "Yes" : "No"}</td>
-            <td className="p-4">
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">{role.name}</td>
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">
+              <span
+                className={`px-2 py-1 text-xs sm:text-sm rounded-md ${
+                  role.active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                }`}
+              >
+                {role.active ? "Active" : "Inactive"}
+              </span>
+            </td>
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">
               {role.permissions.map((perm) => perm.name).join(", ")}
             </td>
-            <td className="p-4">
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">
               {new Date(role.createdDate).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
             </td>
-            <td className="p-4">
+            <td className="p-2 sm:p-4 text-xs sm:text-sm">
               <button
                 onClick={() => dispatch(deleteRole(role._id))}
-                className="px-4 py-2  text-red-500 rounded-md"
+                className="px-4 py-2 text-red-500 rounded-md"
               >
                 <RiDeleteBin6Line size={30} />
               </button>
