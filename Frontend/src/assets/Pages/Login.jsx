@@ -73,7 +73,7 @@ export default function LoginPage() {
         // Delayed navigation to allow toast to show
         setTimeout(() => {
           localStorage.setItem("token", "fake-token");
-          navigate("/dashboard");
+          navigate("/dashboard/app");
         }, 2000);
       } catch (error) {
         console.error("Login Error:", error);
@@ -122,7 +122,7 @@ export default function LoginPage() {
               />
               {error && <p className="text-red-500 text-sm md:text-base">{error}</p>}
               <a
-                target="_blank"
+              target="_blank"
                 href="https://www.instagram.com/prnv_1109/"
                 className="text-[#525DE0] text-xs md:text-sm text-left block mb-4"
               >

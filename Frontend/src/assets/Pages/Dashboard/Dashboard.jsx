@@ -18,6 +18,7 @@ import AddRole from "./AddRole";
 import { RiMenu4Fill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 
+
 const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const location = useLocation();
@@ -104,8 +105,11 @@ const Dashboard = () => {
       ))}
     </div>
   );
+  const handleLogo = () => {
+      navigate('app');
+  }
 
-  return (
+    return (
     <div className="flex flex-col font-raleway md:flex-row h-screen bg-[#222361] text-[#222]">
       {/* Sidebar - Hidden on mobile, visible on md screens */}
       <aside className={`
@@ -118,8 +122,8 @@ const Dashboard = () => {
             <div>
               {/* Menu Toggle Button */}
               <div className="flex justify-between items-center py-5 mb-5">
-                <div className="flex items-center gap-2">
-                  {isMenuOpen && <SiDeepcool color="#5154da" size={45} />}
+                <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogo }>
+                  {isMenuOpen && <SiDeepcool   color="#5154da" size={45}  />}
                   {isMenuOpen && <span className="font-extrabold text-2xl">LOGO</span>}
                 </div>
                 <button
@@ -230,7 +234,7 @@ const Dashboard = () => {
       `}>
         {/* Mobile Header - Visible only on mobile */}
         <div className="md:hidden bg-[#222361] flex justify-between items-center p-3 fixed top-0 left-0 right-0 w-full h-max">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3"  onClick={handleLogo}>
               <SiDeepcool color="#5154da" size={35} /> {/* Increased icon size */}
               <span className="font-bold text-xl text-white">LOGO</span> {/* Increased text size */}
             </div>
