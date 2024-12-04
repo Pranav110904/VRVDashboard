@@ -154,7 +154,7 @@ const AddRoleForm = () => {
             type="submit"
             className="px-6 py-2 bg-[#686bff] text-white rounded-md hover:bg-blue-600"
           >
-            <div className='flex justify-center items-center gap-2'>Add User <TiPlusOutline size={25} /></div> 
+            <div className='flex justify-center items-center gap-2'>Add Role <TiPlusOutline size={25} /></div> 
           </button>
           <button
             type="button"
