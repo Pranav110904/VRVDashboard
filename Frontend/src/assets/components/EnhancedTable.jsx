@@ -16,7 +16,7 @@ const EnhancedTable = () => {
 
     const fetchRoles = async () => {
       try {
-        const roleResponse = await axios.get('/api/roles');
+        const roleResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/roles`);
         setRoles(roleResponse.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -28,7 +28,7 @@ const EnhancedTable = () => {
 useEffect(() => {
   const fetchUsers = async () => {
     try {
-      const userResponse = await axios.get('/api/users');
+      const userResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users`);
       setUsers(userResponse.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -51,11 +51,13 @@ useEffect(() => {
   };
 
   const deleteUser = (userId) => {
+    
     axios
-      .delete(`/api/users/${userId}`) 
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`) 
       .then((response) => {
         setUsers(users.filter((u) => u._id !== userId));
         alert("User deleted successfully!");
+        console.log('User deleted:', response.data);
       })
       .catch((error) => {
         console.error('Error deleting user:', error);
@@ -67,8 +69,8 @@ useEffect(() => {
 
   const deleteSelectedUsers = async () => {
     try {
-     
-      await axios.delete('/api/users/deleteMany', {
+      console.log('Deleting user with ID:', selectedUsers);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/users/ `, {
         data: { ids: selectedUsers }  
       });
       alert("Users deleted successfully!");
@@ -154,7 +156,7 @@ useEffect(() => {
     };
   
     try {
-      const response = await axios.put(`/api/users/edit/${editUser._id}`, updatedUser);
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/users/edit/${editUser._id}`, updatedUser);
       if (response) {
        
         const role = roles.find(role => role._id === updatedUser.role); 

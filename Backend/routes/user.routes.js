@@ -67,7 +67,7 @@ router.delete('/:userId', async (req, res) => {
 router.delete('/', async (req, res) => {
     const { ids } = req.body;
     if (!ids || !Array.isArray(ids)) return res.status(400).json({ message: 'Invalid request' });
-
+    
     try {
         const result = await User.deleteMany({ _id: { $in: ids } });
         if (result.deletedCount > 0) {

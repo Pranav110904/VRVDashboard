@@ -6,7 +6,7 @@ import axios from 'axios';
 export const fetchRoles = createAsyncThunk(
   'roles/fetchRoles',
   async () => {
-    const response = await axios.get('/api/roles');
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/roles`);
     return response.data;
   }
 );
@@ -14,7 +14,7 @@ export const fetchRoles = createAsyncThunk(
 export const fetchPermissions = createAsyncThunk(
   'roles/fetchPermissions',
   async () => {
-    const response = await axios.get('/api/permissions');
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/permissions`);
     return response.data;
   }
 );
@@ -22,7 +22,7 @@ export const fetchPermissions = createAsyncThunk(
 export const addRole = createAsyncThunk(
   'roles/addRole',
   async (roleData) => {
-    const response = await axios.post('/api/roles/addrole', roleData);
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/roles/addrole`, roleData);
     return response.data.role; 
   }
 );
@@ -30,7 +30,7 @@ export const addRole = createAsyncThunk(
 export const deleteRole = createAsyncThunk(
   'roles/deleteRole',
   async (id) => {
-    await axios.delete(`/api/roles/roles/${id}`);
+    await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/roles/roles/${id}`);
     return id; 
   }
 );

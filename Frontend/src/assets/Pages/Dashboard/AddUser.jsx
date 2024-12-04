@@ -22,7 +22,7 @@ const AddUserForm = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get('/api/roles');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/roles`);
         setRolesList(response.data);
       } catch (error) {
         console.error('Error fetching roles:', error);

@@ -26,9 +26,10 @@ const Permissions = () => {
   useEffect(() => {
     const fetchRolesAndPermissions = async () => {
       try {
-        const rolesResponse = await axios.get("/api/roles");
-        const permissionsResponse = await axios.get("/api/permissions");
-        dispatch(setRoles(rolesResponse.data));
+        const rolesResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/roles`);
+        const permissionsResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/permissions`);
+        
+       dispatch(setRoles(rolesResponse.data));
         dispatch(setPermissionsList(permissionsResponse.data));
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -57,7 +58,7 @@ const Permissions = () => {
         // Simulate a 2-second loading time
         await new Promise((resolve) => setTimeout(resolve, 2000));
   
-        await axios.put(`/api/roles/${selectedRole._id}`, {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/roles/${selectedRole._id}`, {
           permissions: updatedPermissions,
         });
         alert("Permissions updated successfully");

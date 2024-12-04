@@ -3,25 +3,25 @@ import axios from 'axios';
 
 
 export const fetchRoles = createAsyncThunk('users/fetchRoles', async () => {
-  const response = await axios.get('/api/roles');
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/roles`);
   return response.data;
 });
 
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-  const response = await axios.get('/api/users');
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users`);
   return response.data;
 });
 
 
 export const addUser = createAsyncThunk('users/addUser', async (userData) => {
-  const response = await axios.post('/api/users/adduser', userData);
+  const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/adduser`, userData);
   return response.data;
 });
 
 
 export const deleteUser = createAsyncThunk('users/deleteUser', async (userId) => {
-  await axios.delete(`/api/users/${userId}`);
+  await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`);
   return userId;
 });
 
