@@ -252,7 +252,7 @@ useEffect(() => {
           Email {renderSortIndicator("email ")}
         </th>
         <th
-          className="p-2 sm:p-4 text-lef cursor-pointert"
+          className="p-2 sm:p-4 text-lef cursor-pointer"
           onClick={() => sortUsers("phone")}
         >
           Phone {renderSortIndicator("phone")}
