@@ -182,11 +182,8 @@ const Permissions = () => {
               onClick={handleUpdatePermissions}
               disabled={loading}
             >
-              {loading ? (
-                <div className="lds-dual-ring w-20 h-20 text-white"></div>
-              ) : (
+              
                 "Save"
-              )}
             </button>
 
             </div>
