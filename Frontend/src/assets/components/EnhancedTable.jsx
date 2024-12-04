@@ -240,43 +240,43 @@ useEffect(() => {
           />
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("name")}
         >
           Name {renderSortIndicator("name")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("email")}
         >
-          Email {renderSortIndicator("email")}
+          Email {renderSortIndicator("email ")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-lef cursor-pointert"
           onClick={() => sortUsers("phone")}
         >
           Phone {renderSortIndicator("phone")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("dob")}
         >
           DOB {renderSortIndicator("dob")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("role")}
         >
           Role {renderSortIndicator("role")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("status")}
         >
           Status {renderSortIndicator("status")}
         </th>
         <th
-          className="p-2 sm:p-4 text-left"
+          className="p-2 sm:p-4 text-left cursor-pointer"
           onClick={() => sortUsers("createdDate")}
         >
           Created Date {renderSortIndicator("createdDate")}
