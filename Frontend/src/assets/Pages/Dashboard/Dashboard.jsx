@@ -29,14 +29,11 @@ const Dashboard = () => {
     return location.pathname.includes(path);
   };
 
-  // Logout handler
+  
   const handleLogout = () => {
-    // Here you would typically:
-    // 1. Clear authentication tokens
-    // 2. Clear user session
-    // 3. Redirect to login page
-    localStorage.clear(); // Example of clearing local storage
-    navigate('/login'); // Redirect to login page
+    
+    localStorage.clear(); 
+    navigate('/login'); 
   };
 
   const NavItem = ({ to, icon: Icon, label }) => (
@@ -111,7 +108,7 @@ const Dashboard = () => {
 
     return (
     <div className="flex flex-col font-raleway md:flex-row h-screen bg-[#222361] text-[#222]">
-      {/* Sidebar - Hidden on mobile, visible on md screens */}
+      {/* Sidebar */}
       <aside className={`
         hidden md:block fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out
         ${isMenuOpen ? 'w-[250px] 2xl:w-[280px] rounded-r-2xl' : 'w-[100px] *: rounded-r-2xl'}
@@ -159,7 +156,7 @@ const Dashboard = () => {
                   <Link 
                     to="app" 
                     className={`
-                      flex flex-col items-center rounded-2xl p-4 
+                      flex flex-col items-center hover:bg-[#bebfff] transition-colors duration-300 rounded-2xl p-4 
                       ${isActive('app') ? 'bg-[#bebfff]' : 'bg-white'}
                     `} 
                     title="Dashboard"
@@ -169,7 +166,7 @@ const Dashboard = () => {
                   <Link 
                     to="users" 
                     className={`
-                      flex flex-col items-center rounded-2xl p-4  
+                      flex flex-col items-center hover:bg-[#bebfff] transition-colors duration-300 rounded-2xl p-4  
                       ${isActive('users') ? 'bg-[#bebfff] rounded-2xl p-4' : 'bg-white'}
                     `} 
                     title="Users"
@@ -179,7 +176,7 @@ const Dashboard = () => {
                   <Link 
                     to="roles" 
                     className={`
-                      flex flex-col items-center rounded-2xl p-4 
+                      flex flex-col items-center hover:bg-[#bebfff] transition-colors duration-300 rounded-2xl p-4 
                       ${isActive('roles') ? 'bg-[#bebfff] rounded-2xl p-4' : ''}
                     `} 
                     title="Roles"
@@ -189,7 +186,7 @@ const Dashboard = () => {
                   <Link 
                     to="permissions" 
                     className={`
-                    flex flex-col items-center rounded-2xl p-4 
+                    flex flex-col items-center hover:bg-[#bebfff] transition-colors duration-300 rounded-2xl p-4 
                       ${isActive('permissions') ? 'bg-[#bebfff] rounded-2xl p-4' : ''}
                     `} 
                     title="Permissions"
