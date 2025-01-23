@@ -22,7 +22,7 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
         <Route path="/add/permissions" element={<Adding/>} />
 
         <Route path="/login" element={<Login />} />
